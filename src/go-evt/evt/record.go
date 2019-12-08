@@ -3,7 +3,6 @@ package evt
 import (
 	"bytes"
 	"encoding/binary"
-	"fmt"
 	"io"
 	"time"
 )
@@ -96,7 +95,6 @@ func getRecord(r io.ReaderAt, recordOffset int64) (Record, error) {
 	}
 	record.WrittenTime = t
 
-	// err = binary.Read(bytes.NewReader(b[20:22]), binary.BigEndian, &record.Identifier.Code)
 	err = read(b, 20, 2, &record.Identifier.Code)
 	if err != nil {
 		return record, err
@@ -178,7 +176,6 @@ func getRecord(r io.ReaderAt, recordOffset int64) (Record, error) {
 			}
 			record.Strings = append(record.Strings, s)
 			offset += l
-			fmt.Println(s)
 		}
 	}
 
