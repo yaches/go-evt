@@ -25,6 +25,9 @@ func main() {
 	}
 	fmt.Println(h)
 	for _, r := range records {
-		fmt.Println(r)
+		if len(r.SID) > 0 {
+			fmt.Println(r.SID)
+		}
+		// fmt.Println(r)
 	}
 }
