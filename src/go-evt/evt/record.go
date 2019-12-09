@@ -3,8 +3,11 @@ package evt
 import (
 	"bytes"
 	"encoding/binary"
+	"encoding/json"
 	"io"
 	"time"
+
+	"go-evt/sid"
 )
 
 // Record describes one evt record
@@ -17,9 +20,9 @@ type Record struct {
 	EventCategory uint16
 	SourceName    string
 	ComputerName  string
-	SID           []byte
-	Strings       []string
-	Data          []byte
+	SID           string   `json:",omitempty"`
+	Strings       []string `json:",omitempty"`
+	Data          []byte   `json:",omitempty"`
 
 	size          uint32
 	stringsNumber uint16
@@ -164,7 +167,11 @@ func getRecord(r io.ReaderAt, recordOffset int64) (Record, error) {
 	record.ComputerName = s
 
 	if record.sidOffset != 0 && record.sidSize != 0 {
-		record.SID = b[record.sidOffset : record.sidOffset+record.sidSize]
+		record.SID, err = sid.ParseSID(b[record.sidOffset : record.sidOffset+record.sidSize])
+		// record.SID, err = sid.NewSID(b[record.sidOffset : record.sidOffset+record.sidSize])
+		if err != nil {
+			return record, err
+		}
 	}
 
 	if record.stringsOffset != 0 {
@@ -184,4 +191,12 @@ func getRecord(r io.ReaderAt, recordOffset int64) (Record, error) {
 	}
 
 	return record, nil
+}
+
+func (record Record) String() string {
+	b, err := json.Marshal(record)
+	if err != nil {
+		return ""
+	}
+	return string(b)
 }
