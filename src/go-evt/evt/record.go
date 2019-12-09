@@ -20,9 +20,9 @@ type Record struct {
 	EventCategory uint16
 	SourceName    string
 	ComputerName  string
-	SID           string   `json:",omitempty"`
-	Strings       []string `json:",omitempty"`
-	Data          []byte   `json:",omitempty"`
+	SID           string `json:",omitempty"`
+	Strings       string
+	Data          []byte `json:",omitempty"`
 
 	size          uint32
 	stringsNumber uint16
@@ -181,7 +181,7 @@ func getRecord(r io.ReaderAt, recordOffset int64) (Record, error) {
 			if err != nil {
 				return record, err
 			}
-			record.Strings = append(record.Strings, s)
+			record.Strings += s + "\n"
 			offset += l
 		}
 	}
