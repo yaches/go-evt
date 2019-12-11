@@ -23,9 +23,11 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	records = records.FilterText("WINXPDEV").FilterType(evt.TypeError, evt.TypeAuditSuccess, evt.TypeAuditFailure, evt.TypeWarning)
+
 	fmt.Println(h)
 	for _, r := range records {
-		// fmt.Println(r.SID.String())
 		fmt.Println(r)
 	}
 }

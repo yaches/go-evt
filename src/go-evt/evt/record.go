@@ -33,6 +33,8 @@ type Record struct {
 	dataOffset    uint32
 }
 
+type Records []Record
+
 type EventIdentifier struct {
 	Code     uint16
 	Facility uint16

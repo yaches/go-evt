@@ -1,6 +1,7 @@
 package evt
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 )
@@ -22,13 +23,21 @@ type Version struct {
 	Minor uint32
 }
 
-func ParseEvt(file *os.File) (Header, []Record, error) {
+func (h Header) String() string {
+	b, err := json.Marshal(h)
+	if err != nil {
+		return ""
+	}
+	return string(b)
+}
+
+func ParseEvt(file *os.File) (Header, Records, error) {
 	h, err := getHeader(file)
 	if err != nil {
 		return Header{}, nil, err
 	}
 
-	records := []Record{}
+	records := Records{}
 
 	offset := uint32(HeaderSize)
 
