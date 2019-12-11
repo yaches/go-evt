@@ -170,7 +170,6 @@ func getRecord(r io.ReaderAt, recordOffset int64) (Record, error) {
 
 	if record.sidOffset != 0 && record.sidSize != 0 {
 		record.SID, err = sid.ParseSID(b[record.sidOffset : record.sidOffset+record.sidSize])
-		// record.SID, err = sid.NewSID(b[record.sidOffset : record.sidOffset+record.sidSize])
 		if err != nil {
 			return record, err
 		}
